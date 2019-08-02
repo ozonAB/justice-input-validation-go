@@ -6,16 +6,24 @@ import (
 	"testing"
 )
 
-func init() {}
-
 func Test_Validate(t *testing.T) {
-	valid, err := validator.Validate(struct {
-		String string `valid:"displayName"`
-	}{String: "Display Name"})
-
-	if err != nil {
-		t.Log(err)
+	inputs := map[string]interface{}{
+		"displayName": struct {
+			Input string `valid:"displayName"`
+		}{Input: "Display Name"},
+		"alphaNoWhiteSpace": struct {
+			Input string `valid:"alphaNoWhiteSpace"`
+		}{Input: "alphaNoWhiteSpace"},
+		"alphaNoWhiteSpaceWithDash": struct {
+			Input string `valid:"alphaNoWhiteSpaceWithDash"`
+		}{Input: "alphaNoWhiteSpaceWithDash"},
 	}
-	assert.Nil(t, err)
-	assert.True(t, valid)
+
+	for k, v := range inputs {
+		t.Run("Test_"+k, func(t *testing.T) {
+			valid, err := validator.Validate(v)
+			assert.Nil(t, err)
+			assert.True(t, valid)
+		})
+	}
 }

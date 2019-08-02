@@ -6,12 +6,11 @@ import (
 )
 
 func IsDisplayName(str string) bool {
-	if utf8.RuneCountInString(str) > 256 {
+	valid, err := regexp.Match("^[a-zA-Z0-9]+(([a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$", []byte(str))
+	if !valid || err != nil {
 		return false
 	}
-
-	matched, err := regexp.Match("^[a-zA-Z0-9]+(([a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$", []byte(str))
-	if !matched || err != nil {
+	if utf8.RuneCountInString(str) > 256 {
 		return false
 	}
 
@@ -19,5 +18,23 @@ func IsDisplayName(str string) bool {
 }
 
 func IsAlphaNoWhiteSpace(str string) bool {
+	valid, err := regexp.Match("^[a-zA-Z0-9]+([_:-]{1}[a-zA-Z0-9]+)*$", []byte(str))
+	if !valid || err != nil {
+		return false
+	}
+	if utf8.RuneCountInString(str) > 30 {
+		return false
+	}
+	return true
+}
+
+func IsAlphaNoWhiteSpaceWithDash(str string) bool {
+	valid, err := regexp.Match("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", []byte(str))
+	if !valid || err != nil {
+		return false
+	}
+	if utf8.RuneCountInString(str) > 256 {
+		return false
+	}
 	return true
 }

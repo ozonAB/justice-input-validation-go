@@ -6,6 +6,8 @@ import (
 
 func init() {
 	govalidator.TagMap["displayName"] = IsDisplayName
+	govalidator.TagMap["alphaNoWhiteSpace"] = IsAlphaNoWhiteSpace
+	govalidator.TagMap["alphaNoWhiteSpaceWithDash"] = IsAlphaNoWhiteSpaceWithDash
 }
 
 func Validate(s interface{}) (bool, error) {
