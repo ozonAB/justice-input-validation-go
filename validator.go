@@ -22,6 +22,7 @@ func init() {
 	govalidator.TagMap["memorySize"] = IsMemorySize
 	govalidator.TagMap["time"] = IsTime
 	govalidator.TagMap["dob"] = IsDate
+	govalidator.TagMap["jwt"] = IsJWT
 }
 
 func Validate(s interface{}) (bool, error) {

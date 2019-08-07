@@ -48,11 +48,11 @@ func Test_Validate(t *testing.T) {
 		}{
 			Input: "O1234567890123456",
 		},
-		//	"password": struct {
-		//		Input string `valid:"password"`
-		//	}{
-		//		Input: "Pasword12!",
-		//	},
+		"password": struct {
+			Input string `valid:"password"`
+		}{
+			Input: "p",
+		},
 		"dockerImage": struct {
 			Input string `valid:"dockerImage"`
 		}{

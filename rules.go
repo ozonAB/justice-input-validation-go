@@ -2,6 +2,7 @@ package validator
 
 import (
 	"github.com/asaskevich/govalidator"
+	"github.com/glenn-brown/golang-pkg-pcre/src/pkg/pcre"
 	"regexp"
 	"strconv"
 	"time"
@@ -106,13 +107,15 @@ func IsOrderNumber(str string) bool {
 }
 
 func IsPassword(str string) bool {
-	valid, err := regexp.MatchString(regexp.QuoteMeta(`^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#."&§%°()\|\[\]\-\$\^\@\/]{8,32}$`), str)
-	if !valid || err != nil {
+	m, err := pcre.Compile(`^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#."&§%°()\|\[\]\-\$\^\@\/]{8,32}$`, 0)
+	if err != nil {
 		return false
 	}
-	if utf8.RuneCountInString(str) < 8 || utf8.RuneCountInString(str) > 32 {
+
+	if len(m.FindIndex([]byte(str), 0)) == 0 {
 		return false
 	}
+
 	return true
 }
 
@@ -177,6 +180,14 @@ func IsTime(str string) bool {
 
 func IsDate(str string) bool {
 	valid, err := regexp.MatchString(`\d{4}-\d{2}-\d{2}`, str)
+	if !valid || err != nil {
+		return false
+	}
+	return true
+}
+
+func IsJWT(str string) bool {
+	valid, err := regexp.MatchString(`^([A-Za-z0-9\-_~+\/]+[=]{0,2})\.([A-Za-z0-9\-_~+\/]+[=]{0,2})(?:\.([A-Za-z0-9\-_~+\/]+[=]{0,2}))?$`, str)
 	if !valid || err != nil {
 		return false
 	}
