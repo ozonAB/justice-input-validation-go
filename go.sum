@@ -6,6 +6,8 @@ github.com/glenn-brown/golang-pkg-pcre v0.0.0-20120522223659-48bb82a8b8ce h1:MS/
 github.com/glenn-brown/golang-pkg-pcre v0.0.0-20120522223659-48bb82a8b8ce/go.mod h1:5385NDJ+Gt5loLrAlc8Rr5lKA1L5BE5O94jfdwEX9kg=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/samthor/sre2 v0.0.0-20150929104051-385a11de6465 h1:wBlPHvlbdZ6ayo7VQwOB5ELOBR60NILwliYKzzL6kCI=
+github.com/samthor/sre2 v0.0.0-20150929104051-385a11de6465/go.mod h1:wC7NlXky67Bw5ByutSFPgjYbr3k45tgjnOeYnPM7nek=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=

@@ -274,20 +274,3 @@ func Test_IsPath(t *testing.T) {
 		}
 	})
 }
-
-func Test_IsPassword(t *testing.T) {
-	t.Run("Test_IsPasswordValid", func(t *testing.T) {
-		inputs := []string{"Password1", "passworD123"}
-		for i, input := range inputs {
-			valid := validator.IsPassword(input)
-			assert.True(t, valid, i)
-		}
-	})
-	t.Run("Test_IsPasswordInValidLength", func(t *testing.T) {
-		inputs := []string{"Short1", "Long123456789012345678901234567890123"}
-		for i, input := range inputs {
-			valid := validator.IsPassword(input)
-			assert.True(t, valid, i)
-		}
-	})
-}

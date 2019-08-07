@@ -15,7 +15,6 @@ func init() {
 	govalidator.TagMap["userDisplayName"] = IsUserDisplayName
 	govalidator.TagMap["uuid4WithoutHyphens"] = IsUUID4WithoutHyphens
 	govalidator.TagMap["orderNumber"] = IsOrderNumber
-	govalidator.TagMap["password"] = IsPassword
 	govalidator.TagMap["dockerImage"] = IsDockerImage
 	govalidator.TagMap["permissionResource"] = IsPermissionResource
 	govalidator.TagMap["path"] = IsPath

@@ -2,7 +2,6 @@ package validator
 
 import (
 	"github.com/asaskevich/govalidator"
-	"github.com/glenn-brown/golang-pkg-pcre/src/pkg/pcre"
 	"regexp"
 	"strconv"
 	"time"
@@ -100,19 +99,6 @@ func IsOrderNumber(str string) bool {
 		return false
 	}
 	if utf8.RuneCountInString(str) != 17 {
-		return false
-	}
-
-	return true
-}
-
-func IsPassword(str string) bool {
-	m, err := pcre.Compile(`^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#."&§%°()\|\[\]\-\$\^\@\/]{8,32}$`, 0)
-	if err != nil {
-		return false
-	}
-
-	if len(m.FindIndex([]byte(str), 0)) == 0 {
 		return false
 	}
 
