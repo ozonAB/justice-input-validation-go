@@ -87,7 +87,7 @@ func Test_Validate(t *testing.T) {
 
 	for i, v := range inputs {
 		t.Run("Test_"+i, func(t *testing.T) {
-			valid, err := validator.Validate(v)
+			valid, err := validator.ValidateStruct(v)
 			if err != nil {
 				t.Fatal(err.Error())
 			}

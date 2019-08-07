@@ -163,6 +163,18 @@ func IsPath(str string) bool {
 	return true
 }
 
+func IsUrl(str string) bool {
+	valid, err := regexp.MatchString(`^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$`, str)
+	if !valid || err != nil {
+		return false
+	}
+	if utf8.RuneCountInString(str) > 2000 {
+		return false
+	}
+
+	return true
+}
+
 func IsMemorySize(str string) bool {
 	valid, err := regexp.MatchString(`^[0-9]+Mi$`, str)
 	if !valid || err != nil {
