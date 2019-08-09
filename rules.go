@@ -191,3 +191,15 @@ func IsJWT(str string) bool {
 	}
 	return true
 }
+
+func IsNumeric(str string) bool {
+	return govalidator.IsNumeric(str)
+}
+
+func IsIn(str string, params ...string) bool {
+	return govalidator.IsIn(str, params...)
+}
+
+func IsLowerCase(str string) bool {
+	return govalidator.IsLowerCase(str)
+}
