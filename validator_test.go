@@ -78,6 +78,11 @@ func Test_Validate(t *testing.T) {
 		}{
 			Input: "1993-11-16",
 		},
+		"password": struct {
+			Input string `valid:"password"`
+		}{
+			Input: "Password99!@",
+		},
 	}
 
 	for i, v := range inputs {

@@ -203,3 +203,7 @@ func IsIn(str string, params ...string) bool {
 func IsLowerCase(str string) bool {
 	return govalidator.IsLowerCase(str)
 }
+
+func IsPassword(str string) bool {
+	return true
+}

@@ -23,6 +23,7 @@ func init() {
 	govalidator.TagMap["time"] = IsTime
 	govalidator.TagMap["dob"] = IsDate
 	govalidator.TagMap["jwt"] = IsJWT
+	govalidator.TagMap["password"] = IsPassword
 }
 
 func ValidateStruct(s interface{}) (bool, error) {
