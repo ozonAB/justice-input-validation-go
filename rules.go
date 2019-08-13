@@ -5,11 +5,12 @@ import (
 	"regexp"
 	"strconv"
 	"time"
+	"unicode"
 	"unicode/utf8"
 )
 
 func IsAlphaNumeric(str string, params ...string) bool {
-	valid, err := regexp.Match("^[a-zA-Z0-9]+([_:-]{1}[a-zA-Z0-9]+)*$", []byte(str))
+	valid, err := regexp.MatchString("^[a-zA-Z0-9]+([_:-]{1}[a-zA-Z0-9]+)*$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -23,7 +24,7 @@ func IsAlphaNumeric(str string, params ...string) bool {
 }
 
 func IsTag(str string) bool {
-	valid, err := regexp.Match("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", []byte(str))
+	valid, err := regexp.MatchString("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -35,7 +36,7 @@ func IsTag(str string) bool {
 }
 
 func IsLanguage(str string) bool {
-	valid, err := regexp.Match("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", []byte(str))
+	valid, err := regexp.MatchString("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -47,7 +48,7 @@ func IsLanguage(str string) bool {
 }
 
 func IsTopic(str string) bool {
-	valid, err := regexp.Match("^[A-Z]+([_]{1}[A-Z]+)*$", []byte(str))
+	valid, err := regexp.MatchString("^[A-Z]+([_]{1}[A-Z]+)*$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -58,7 +59,7 @@ func IsTopic(str string) bool {
 }
 
 func IsDisplayName(str string) bool {
-	valid, err := regexp.Match("^[a-zA-Z0-9]+(([a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$", []byte(str))
+	valid, err := regexp.MatchString("^[a-zA-Z0-9]+(([a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -71,7 +72,7 @@ func IsDisplayName(str string) bool {
 }
 
 func IsUserDisplayName(str string) bool {
-	valid, err := regexp.Match("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", []byte(str))
+	valid, err := regexp.MatchString("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -83,7 +84,7 @@ func IsUserDisplayName(str string) bool {
 }
 
 func IsUUID4WithoutHyphens(str string) bool {
-	valid, err := regexp.Match("^[0-9a-f]{16}[89ab][0-9a-f]{15}$", []byte(str))
+	valid, err := regexp.MatchString("^[0-9a-f]{16}[89ab][0-9a-f]{15}$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -94,7 +95,7 @@ func IsUUID4WithoutHyphens(str string) bool {
 }
 
 func IsOrderNumber(str string) bool {
-	valid, err := regexp.Match("^O[0-9]{16}$", []byte(str))
+	valid, err := regexp.MatchString("^O[0-9]{16}$", str)
 	if !valid || err != nil {
 		return false
 	}
@@ -205,5 +206,28 @@ func IsLowerCase(str string) bool {
 }
 
 func IsPassword(str string) bool {
-	return true
+	var (
+		hasLengthValid = false
+		hasUpper       = false
+		hasLower       = false
+		hasNumber      = false
+		hasSpecial     = false
+	)
+	if len(str) > 7 && len(str) <= 32 {
+		hasLengthValid = true
+	}
+	for _, char := range str {
+		switch {
+		case unicode.IsUpper(char):
+			hasUpper = true
+		case unicode.IsLower(char):
+			hasLower = true
+		case unicode.IsNumber(char):
+			hasNumber = true
+		case unicode.IsPunct(char) || unicode.IsSymbol(char):
+			hasSpecial = true
+		}
+	}
+	return hasLengthValid && hasUpper && hasLower && hasNumber && hasSpecial
+
 }
