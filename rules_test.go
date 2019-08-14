@@ -274,3 +274,38 @@ func Test_IsPath(t *testing.T) {
 		}
 	})
 }
+
+func Test_IsPassword(t *testing.T) {
+	t.Run("Test_PasswordValid", func(t *testing.T) {
+		inputs := []string{"Password1", "p@ssword1", "P@SSWORD1", "Password!"}
+		for i, input := range inputs {
+			valid := validator.IsPassword(input)
+			assert.True(t, valid, i)
+		}
+	})
+	t.Run("Test_PasswordInvalidLength", func(t *testing.T) {
+		inputs := []string{"Paswrd1", "p@swrd1", "P@SWRD1", "Paswrd!"}
+		for i, input := range inputs {
+			valid := validator.IsPassword(input)
+			assert.False(t, valid, i)
+		}
+	})
+	t.Run("Test_PasswordInvalidRules", func(t *testing.T) {
+		inputs := []string{
+			"password",  // only match 1 rule: lowercase
+			"PASSWORD",  // only match 1 rule: uppercase
+			"12345678",  // only match 1 rule: number
+			"!@#$%^&*",  // only match 1 rule: special chars
+			"Password",  // only match 2 rules: uppercase & lowercase
+			"password1", // only match 2 rules: lowercase & number
+			"PASSWORD1", // only match 2 rules: uppercase & number
+			"@#$%^&*1",  // only match 2 rules: special chars & number
+			"password!", // only match 2 rules: special chars & lowercase
+			"PASSWORD!", // only match 2 rules: special chars & uppercase
+		}
+		for i, input := range inputs {
+			valid := validator.IsPassword(input)
+			assert.False(t, valid, i)
+		}
+	})
+}

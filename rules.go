@@ -228,6 +228,13 @@ func IsPassword(str string) bool {
 			hasSpecial = true
 		}
 	}
-	return hasLengthValid && hasUpper && hasLower && hasNumber && hasSpecial
 
+	if ((hasUpper && hasLower && hasNumber) ||
+		(hasUpper && hasLower && hasSpecial) ||
+		(hasNumber && hasSpecial && hasUpper) ||
+		(hasNumber && hasSpecial && hasLower)) && hasLengthValid {
+		return true
+	}
+
+	return false
 }
