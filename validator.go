@@ -1,13 +1,14 @@
 package validator
 
 import (
-	"github.com/asaskevich/govalidator"
 	"regexp"
+
+	"github.com/asaskevich/govalidator"
 )
 
 func init() {
 	govalidator.ParamTagMap["alphaNumeric"] = IsAlphaNumeric
-	govalidator.ParamTagRegexMap["alphaNumeric"] = regexp.MustCompile("^alphaNumeric\\((\\w+)\\)$")
+	govalidator.ParamTagRegexMap["alphaNumeric"] = regexp.MustCompile("^alphaNumeric\\((\\w+)\\)$") //nolint
 	govalidator.TagMap["tag"] = IsTag
 	govalidator.TagMap["language"] = IsLanguage
 	govalidator.TagMap["topic"] = IsTopic
@@ -18,7 +19,7 @@ func init() {
 	govalidator.TagMap["dockerImage"] = IsDockerImage
 	govalidator.TagMap["permissionResource"] = IsPermissionResource
 	govalidator.TagMap["path"] = IsPath
-	govalidator.TagMap["url"] = IsUrl
+	govalidator.TagMap["url"] = IsURL
 	govalidator.TagMap["memorySize"] = IsMemorySize
 	govalidator.TagMap["time"] = IsTime
 	govalidator.TagMap["dob"] = IsDate

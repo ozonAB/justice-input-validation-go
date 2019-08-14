@@ -1,9 +1,10 @@
 package validator_test
 
 import (
+	"testing"
+
 	validator "github.com/AccelByte/justice-input-validation-go"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 var invalidLengthInput256 = `

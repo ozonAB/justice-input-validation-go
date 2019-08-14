@@ -1,12 +1,13 @@
 package validator
 
 import (
-	"github.com/asaskevich/govalidator"
 	"regexp"
 	"strconv"
 	"time"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/asaskevich/govalidator"
 )
 
 func IsAlphaNumeric(str string, params ...string) bool {
@@ -150,8 +151,8 @@ func IsPath(str string) bool {
 	return true
 }
 
-func IsUrl(str string) bool {
-	valid, err := regexp.MatchString(`^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$`, str)
+func IsURL(str string) bool {
+	valid, err := regexp.MatchString(`^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$`, str) //nolint
 	if !valid || err != nil {
 		return false
 	}
@@ -186,7 +187,7 @@ func IsDate(str string) bool {
 }
 
 func IsJWT(str string) bool {
-	valid, err := regexp.MatchString(`^([A-Za-z0-9\-_~+\/]+[=]{0,2})\.([A-Za-z0-9\-_~+\/]+[=]{0,2})(?:\.([A-Za-z0-9\-_~+\/]+[=]{0,2}))?$`, str)
+	valid, err := regexp.MatchString(`^([A-Za-z0-9\-_~+\/]+[=]{0,2})\.([A-Za-z0-9\-_~+\/]+[=]{0,2})(?:\.([A-Za-z0-9\-_~+\/]+[=]{0,2}))?$`, str) //nolint
 	if !valid || err != nil {
 		return false
 	}
@@ -206,33 +207,38 @@ func IsLowerCase(str string) bool {
 }
 
 func IsPassword(str string) bool {
-	var (
-		hasLengthValid = false
-		hasUpper       = false
-		hasLower       = false
-		hasNumber      = false
-		hasSpecial     = false
-	)
+	fulfilledRules := 0
+	rules := map[string]bool{
+		"hasLengthValid": false,
+		"hasUpper":       false,
+		"hasLower":       false,
+		"hasNumber":      false,
+		"hasSpecial":     false,
+	}
+
 	if len(str) > 7 && len(str) <= 32 {
-		hasLengthValid = true
+		rules["hasLengthValid"] = true
 	}
 	for _, char := range str {
 		switch {
 		case unicode.IsUpper(char):
-			hasUpper = true
+			rules["hasUpper"] = true
 		case unicode.IsLower(char):
-			hasLower = true
+			rules["hasLower"] = true
 		case unicode.IsNumber(char):
-			hasNumber = true
+			rules["hasNumber"] = true
 		case unicode.IsPunct(char) || unicode.IsSymbol(char):
-			hasSpecial = true
+			rules["hasSpecial"] = true
 		}
 	}
 
-	if ((hasUpper && hasLower && hasNumber) ||
-		(hasUpper && hasLower && hasSpecial) ||
-		(hasNumber && hasSpecial && hasUpper) ||
-		(hasNumber && hasSpecial && hasLower)) && hasLengthValid {
+	for rule, fulfilled := range rules {
+		if fulfilled && rule != "hasLengthValid" {
+			fulfilledRules++
+		}
+	}
+
+	if rules["hasLengthValid"] && fulfilledRules >= 3 {
 		return true
 	}
 
