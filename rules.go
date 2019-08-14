@@ -129,7 +129,7 @@ func IsOWASPEmail(str string) bool {
 }
 
 func IsPermissionResource(str string) bool {
-	valid, err := regexp.MatchString(`^[A-Z]+([:]{1}([A-Z]+|(({[a-zA-Z]+})|\*)))*$`, str)
+	valid, err := regexp.MatchString(`^[A-Z]+([:]{1}([A-Z]+|(({[a-zA-Z]+})|[a-zA-Z0-9]+|\*)))*$`, str)
 	if !valid || err != nil {
 		return false
 	}

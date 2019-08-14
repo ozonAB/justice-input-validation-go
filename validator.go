@@ -24,6 +24,7 @@ func init() {
 	govalidator.TagMap["dob"] = IsDate
 	govalidator.TagMap["jwt"] = IsJWT
 	govalidator.TagMap["password"] = IsPassword
+	govalidator.TagMap["emailOWASP"] = IsOWASPEmail
 }
 
 func ValidateStruct(s interface{}) (bool, error) {
