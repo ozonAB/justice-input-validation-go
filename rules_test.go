@@ -1,6 +1,7 @@
 package validator_test
 
 import (
+	"fmt"
 	"testing"
 
 	validator "github.com/AccelByte/justice-input-validation-go"
@@ -308,5 +309,36 @@ func Test_IsPassword(t *testing.T) {
 			valid := validator.IsPassword(input)
 			assert.False(t, valid, i)
 		}
+	})
+}
+
+func Test_BaseValidator(t *testing.T) {
+	type tempResult struct {
+		inputValue   string
+		assertResult bool
+	}
+	t.Run("Test_AvailableBaseValidator", func(t *testing.T) {
+		inputTest := make(map[string]tempResult, 3)
+		inputTest["ISO3166Alpha2"] = tempResult{
+			inputValue:   "US",
+			assertResult: true,
+		}
+		inputTest["ipv4"] = tempResult{
+			inputValue:   "192.168.1.1",
+			assertResult: true,
+		}
+		inputTest["numeric"] = tempResult{
+			inputValue:   "inputTest",
+			assertResult: false,
+		}
+
+		for rule, temp := range inputTest {
+			valid := validator.BaseValidator(rule, temp.inputValue)
+			assert.Equal(t, temp.assertResult, valid, fmt.Sprintf("%s with input %s should be %t, %t found", rule, temp.inputValue, temp.assertResult, valid))
+		}
+	})
+	t.Run("Test_UnavailableBaseValidator", func(t *testing.T) {
+		valid := validator.BaseValidator("ruleNotFound", "string")
+		assert.False(t, valid)
 	})
 }
