@@ -28,8 +28,18 @@ func init() {
 	govalidator.TagMap["emailOWASP"] = IsOWASPEmail
 }
 
+// ValidateStruct is used to check the Struct based on the rule of each field
 func ValidateStruct(s interface{}) (bool, error) {
 	valid, err := govalidator.ValidateStruct(s)
 
 	return valid, err
+}
+
+// BaseValidator is used to extend validate function in GoValidator
+func BaseValidator(validationRule string, input string) bool {
+	tagMap := govalidator.TagMap
+	if _, ok := tagMap[validationRule]; !ok {
+		return false
+	}
+	return tagMap[validationRule](input)
 }
