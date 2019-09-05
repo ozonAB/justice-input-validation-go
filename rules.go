@@ -1,197 +1,63 @@
 package validator
 
 import (
-	"regexp"
+	"github.com/asaskevich/govalidator"
+	"github.com/pariz/gountries"
 	"strconv"
 	"time"
-	"unicode"
-	"unicode/utf8"
-
-	"github.com/asaskevich/govalidator"
 )
 
-func IsAlphaNumeric(str string, params ...string) bool {
-	valid, err := regexp.MatchString("^[a-zA-Z0-9]+([_:-]{1}[a-zA-Z0-9]+)*$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if len(params) > 0 {
-		if length, err := strconv.Atoi(params[0]); utf8.RuneCountInString(str) > length || err != nil {
-			return false
-		}
-	}
-
-	return true
-}
-
 func IsTag(str string) bool {
-	valid, err := regexp.MatchString("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 30 {
-		return false
-	}
-
-	return true
+	return rxTag.MatchString(str)
 }
 
 func IsLanguage(str string) bool {
-	valid, err := regexp.MatchString("^[a-zA-Z]+([-]{1}[a-zA-Z]+)*$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-
-	return true
+	return rxLanguage.MatchString(str)
 }
 
 func IsTopic(str string) bool {
-	valid, err := regexp.MatchString("^[A-Z]+([_]{1}[A-Z]+)*$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-	return true
+	return rxTopic.MatchString(str)
 }
 
 func IsDisplayName(str string) bool {
-	valid, err := regexp.MatchString("^[a-zA-Z0-9]+(([a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$", str)
-	if !valid || err != nil {
-		return false
-	}
-
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-
-	return true
+	return rxDisplayName.MatchString(str)
 }
 
-func IsUserDisplayName(str string) bool {
-	valid, err := regexp.MatchString("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-
-	return true
+func IsPersonName(str string) bool {
+	return rxPersonName.MatchString(str)
 }
 
 func IsUUID4WithoutHyphens(str string) bool {
-	valid, err := regexp.MatchString("^[0-9a-f]{16}[89ab][0-9a-f]{15}$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 32 {
-		return false
-	}
-	return true
+	return rxUUIDv4WithoutHyphen.MatchString(str)
 }
 
-func IsOrderNumber(str string) bool {
-	valid, err := regexp.MatchString("^O[0-9]{16}$", str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) != 17 {
-		return false
-	}
-
-	return true
-}
-
-func IsDockerImage(str string) bool {
-	valid, err := regexp.MatchString(`^[a-z0-9]+([\/_-]{1}[a-z0-9]+)*([:]{1}([0-9a-z]+([.-]{1}[0-9a-z]+)*)+)?$`, str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-	return true
-}
-
-func IsOWASPEmail(str string) bool {
-	valid, err := regexp.MatchString(`^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$`, str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 254 || utf8.RuneCountInString(str) < 5 {
-		return false
-	}
-	return true
+func IsEmail(str string) bool {
+	return rxOWASPEmail.MatchString(str)
 }
 
 func IsPermissionResource(str string) bool {
-	valid, err := regexp.MatchString(`^[A-Z]+([:]{1}([A-Z]+|(({[a-zA-Z]+})|[a-zA-Z0-9]+|\*)))*$`, str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-	return true
+	return rxResourcePermission.MatchString(str)
 }
 
 func IsPath(str string) bool {
-	valid, err := regexp.MatchString(`^(\/[a-zA-Z0-9]+)+$`, str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 256 {
-		return false
-	}
-	return true
+	return rxPath.MatchString(str)
 }
 
 func IsURL(str string) bool {
-	valid, err := regexp.MatchString(`^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$`, str) //nolint
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 2000 {
-		return false
-	}
-
-	return true
+	return rxOWASPUrl.MatchString(str)
 }
 
-func IsMemorySize(str string) bool {
-	valid, err := regexp.MatchString(`^[0-9]+Mi$`, str)
-	if !valid || err != nil {
-		return false
-	}
-	if utf8.RuneCountInString(str) > 9 {
-		return false
-	}
-	return true
-}
-
-func IsTime(str string) bool {
-	return govalidator.IsTime(str, time.RFC3339)
+func IsDateTime(str string) bool {
+	return govalidator.IsRFC3339(str)
 }
 
 func IsDate(str string) bool {
-	valid, err := regexp.MatchString(`\d{4}-\d{2}-\d{2}`, str)
-	if !valid || err != nil {
-		return false
-	}
-	return true
+	_, err := time.Parse(ISO8601TimeFormat, str)
+	return err == nil
 }
 
 func IsJWT(str string) bool {
-	valid, err := regexp.MatchString(`^([A-Za-z0-9\-_~+\/]+[=]{0,2})\.([A-Za-z0-9\-_~+\/]+[=]{0,2})(?:\.([A-Za-z0-9\-_~+\/]+[=]{0,2}))?$`, str) //nolint
-	if !valid || err != nil {
-		return false
-	}
-	return true
+	return rxJWT.MatchString(str)
 }
 
 func IsNumeric(str string) bool {
@@ -207,40 +73,30 @@ func IsLowerCase(str string) bool {
 }
 
 func IsPassword(str string) bool {
-	fulfilledRules := 0
-	rules := map[string]bool{
-		"hasLengthValid": false,
-		"hasUpper":       false,
-		"hasLower":       false,
-		"hasNumber":      false,
-		"hasSpecial":     false,
+	valid, err := rxOWASPComplexPassword.MatchString(str)
+	if err != nil {
+		return false
 	}
+	return valid
+}
 
-	if len(str) > 7 && len(str) <= 32 {
-		rules["hasLengthValid"] = true
-	}
-	for _, char := range str {
-		switch {
-		case unicode.IsUpper(char):
-			rules["hasUpper"] = true
-		case unicode.IsLower(char):
-			rules["hasLower"] = true
-		case unicode.IsNumber(char):
-			rules["hasNumber"] = true
-		case unicode.IsPunct(char) || unicode.IsSymbol(char):
-			rules["hasSpecial"] = true
-		}
-	}
+func StringLength(input string, min int, max int) bool {
+	return govalidator.StringLength(input, strconv.Itoa(min), strconv.Itoa(max))
+}
 
-	for rule, fulfilled := range rules {
-		if fulfilled && rule != "hasLengthValid" {
-			fulfilledRules++
-		}
-	}
+func IsNotContainWhitespace(str string) bool {
+	return !rxContainWhitespace.MatchString(str)
+}
 
-	if rules["hasLengthValid"] && fulfilledRules >= 3 {
-		return true
-	}
+func IsContainWhitespace(str string) bool {
+	return rxContainWhitespace.MatchString(str)
+}
 
-	return false
+func IsCountry(str string) bool {
+	_, err := gountries.New().FindCountryByAlpha(str)
+	return err == nil
+}
+
+func IsCodeChallenge(str string) bool {
+	return rxCodeChallenge.MatchString(str)
 }

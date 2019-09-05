@@ -10,7 +10,7 @@ import (
 func Test_Validate(t *testing.T) {
 	inputs := map[string]interface{}{
 		"alphaNumeric": struct {
-			Input string `valid:"alphaNumeric(256)"`
+			Input string `valid:"alphanum"`
 		}{
 			Input: "AlphaNumericChars",
 		},
@@ -34,25 +34,15 @@ func Test_Validate(t *testing.T) {
 		}{
 			Input: "DisplayName",
 		},
-		"userDisplayName": struct {
-			Input string `valid:"userDisplayName"`
+		"personName": struct {
+			Input string `valid:"personName"`
 		}{
-			Input: "DisplayName",
+			Input: "PersonName",
 		},
 		"uuid4WithoutHyphens": struct {
 			Input string `valid:"uuid4WithoutHyphens"`
 		}{
 			Input: "c82fd812449942d2bd74806e32bda386",
-		},
-		"orderNumber": struct {
-			Input string `valid:"orderNumber"`
-		}{
-			Input: "O1234567890123456",
-		},
-		"dockerImage": struct {
-			Input string `valid:"dockerImage"`
-		}{
-			Input: "alpine:latest",
 		},
 		"permissionResource": struct {
 			Input string `valid:"permissionResource"`
@@ -64,18 +54,13 @@ func Test_Validate(t *testing.T) {
 		}{
 			Input: "/a/path/to/somewhere",
 		},
-		"memorySize": struct {
-			Input string `valid:"memorySize"`
-		}{
-			Input: "1Mi",
-		},
-		"time": struct {
-			Input string `valid:"time"`
+		"dateTime": struct {
+			Input string `valid:"dateTime"`
 		}{
 			Input: "2002-10-02T10:00:00-05:00",
 		},
-		"dob": struct {
-			Input string `valid:"dob"`
+		"date": struct {
+			Input string `valid:"date"`
 		}{
 			Input: "1993-11-16",
 		},

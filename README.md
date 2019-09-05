@@ -1,6 +1,6 @@
 # justice-input-validation-go
 
-This is Accelbyte Justice Golang Input Validation package. This package is extending functionality from [govalidator](https://github.com/asaskevich/govalidator) and add some additional rule to it.
+This is AccelByte Justice Golang Input Validation package. This package is extending functionality from [govalidator](https://github.com/asaskevich/govalidator) and add some additional rule to it.
 
 ## Usage
 
@@ -42,19 +42,20 @@ if valid, err := validator.ValidateStruct(reqData); !valid || err {
 "language"              : IsLanguage
 "topic"                 : IsTopic
 "displayName"           : IsDisplayName
-"userDisplayName"       : IsUserDisplayName
+"personName"            : IsPersonName
 "uuid4WithoutHyphens"   : IsUUID4WithoutHyphens
-"orderNumber"           : IsOrderNumber
-"dockerImage"           : IsDockerImage
 "permissionResource"    : IsPermissionResource
 "path"                  : IsPath
 "url"                   : IsURL
-"memorySize"            : IsMemorySize
-"time"                  : IsTime
-"dob"                   : IsDate
+"dateTime"              : IsDateTime
+"date"                  : IsDate
 "jwt"                   : IsJWT
 "password"              : IsPassword
-"emailOWASP"            : IsOWASPEmail
+"email"                 : IsEmail
+"codeChallenge"         : IsCodeChallenge
+"notContainWhitespace"  : IsNotContainWhitespace
+"containWhitespace"     : IsContainWhitespace
+"country"               : IsCountry
 ```
 
 And of course this package is not limiting the functionality that came from [govalidator](https://github.com/asaskevich/govalidator) package, you can use all available validation rules that supported by [govalidator](https://github.com/asaskevich/govalidator) package.
