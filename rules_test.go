@@ -8,28 +8,21 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var invalidLengthInput256 = `
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-	Nunc vitae justo porta, dapibus nisl et, tempus ex. 
-	Etiam dolor sem, blandit nec ultricies ultrices, aliquam eu tortor. 
-	Maecenas bibendum diam elit. Cras malesuada et nibh et viverra.
-`
-
 func Test_IsAlphaNumeric(t *testing.T) {
 	t.Run("Test_AlphaNumericValid", func(t *testing.T) {
 		input := "validString"
-		valid := validator.IsAlphaNumeric(input, "256")
+		valid := validator.BaseValidator("alphanum", input)
 		assert.True(t, valid)
 	})
 	t.Run("Test_AlphaNumericValidWithoutParams", func(t *testing.T) {
 		input := "validString"
-		valid := validator.IsAlphaNumeric(input)
+		valid := validator.BaseValidator("alphanum", input)
 		assert.True(t, valid)
 	})
 	t.Run("Test_AlphaNumericInValid", func(t *testing.T) {
 		inputs := []string{"invalid string", "inv@lidString"}
 		for _, input := range inputs {
-			valid := validator.IsAlphaNumeric(input)
+			valid := validator.BaseValidator("alphanum", input)
 			assert.False(t, valid)
 		}
 	})
@@ -42,11 +35,6 @@ func Test_IsTag(t *testing.T) {
 			valid := validator.IsTag(input)
 			assert.True(t, valid)
 		}
-	})
-	t.Run("Test_TagInValidLength", func(t *testing.T) {
-		input := "moreThan30Charsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-		valid := validator.IsTag(input)
-		assert.False(t, valid)
 	})
 	t.Run("Test_TagInValidChars", func(t *testing.T) {
 		inputs := []string{"1nv@lid", "inv a lid"}
@@ -65,11 +53,6 @@ func Test_IsLanguage(t *testing.T) {
 			assert.True(t, valid)
 		}
 	})
-	t.Run("Test_LanguageInValidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsLanguage(input)
-		assert.False(t, valid)
-	})
 	t.Run("Test_LanguageInValidChars", func(t *testing.T) {
 		inputs := []string{"1nv@lid", "inv a lid"}
 		for _, input := range inputs {
@@ -86,11 +69,6 @@ func Test_IsTopic(t *testing.T) {
 			valid := validator.IsTopic(input)
 			assert.True(t, valid)
 		}
-	})
-	t.Run("Test_TopicInValidLength", func(t *testing.T) {
-		input := "moreThan5Chars"
-		valid := validator.IsTopic(input)
-		assert.False(t, valid)
 	})
 	t.Run("Test_TopicInValidChars", func(t *testing.T) {
 		inputs := []string{"invalid", "INVALId", "iNVALID", "INVALID_", "_INVALID", "INV@LID"}
@@ -109,13 +87,8 @@ func Test_IsDisplayName(t *testing.T) {
 			assert.True(t, valid)
 		}
 	})
-	t.Run("Test_DisplayNameInValidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsDisplayName(input)
-		assert.False(t, valid)
-	})
-	t.Run("Test_DisplayNameInValidChars", func(t *testing.T) {
-		inputs := []string{"In_Valid", "In-Valid", "Inv@lid"}
+	t.Run("Test_DisplayNameInvalidChars", func(t *testing.T) {
+		inputs := []string{"In+Valid", "!nValid", "Inv@lid"}
 		for _, input := range inputs {
 			valid := validator.IsDisplayName(input)
 			assert.False(t, valid)
@@ -123,23 +96,18 @@ func Test_IsDisplayName(t *testing.T) {
 	})
 }
 
-func Test_IsUserDisplayName(t *testing.T) {
-	t.Run("Test_UserDisplayNameValid", func(t *testing.T) {
+func Test_IsPersonName(t *testing.T) {
+	t.Run("Test_IsPersonNameValid", func(t *testing.T) {
 		inputs := []string{"Valid Name", "Valid.Name", "valid,name", "valid-name", "VALID NAME"}
 		for _, input := range inputs {
-			valid := validator.IsUserDisplayName(input)
+			valid := validator.IsPersonName(input)
 			assert.True(t, valid)
 		}
 	})
-	t.Run("Test_UserDisplayNameInValidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsUserDisplayName(input)
-		assert.False(t, valid)
-	})
-	t.Run("Test_UserDisplayNameInValidChars", func(t *testing.T) {
+	t.Run("Test_IsPersonNameInValidChars", func(t *testing.T) {
 		inputs := []string{"inv4lid", "in_valid", "Inv@lid"}
 		for _, input := range inputs {
-			valid := validator.IsUserDisplayName(input)
+			valid := validator.IsPersonName(input)
 			assert.False(t, valid)
 		}
 	})
@@ -153,11 +121,6 @@ func Test_UUID4WithoutHyphens(t *testing.T) {
 			assert.True(t, valid)
 		}
 	})
-	t.Run("Test_UUID4WithoutHyphensInValidLength", func(t *testing.T) {
-		input := "c82fd812449942d2bd74806e32bda3861"
-		valid := validator.IsUUID4WithoutHyphens(input)
-		assert.False(t, valid)
-	})
 	t.Run("Test_UUID4WithoutHyphensInValidChars", func(t *testing.T) {
 		inputs := []string{"inv4lid", "in_valid", "Inv@lid"}
 		for _, input := range inputs {
@@ -167,67 +130,18 @@ func Test_UUID4WithoutHyphens(t *testing.T) {
 	})
 }
 
-func Test_OrderNumber(t *testing.T) {
-	t.Run("Test_OrderNumberValid", func(t *testing.T) {
-		inputs := []string{"O1234567890123456"}
-		for _, input := range inputs {
-			valid := validator.IsOrderNumber(input)
-			assert.True(t, valid)
-		}
-	})
-	t.Run("Test_OrderNumberInvalidLength", func(t *testing.T) {
-		input := "012345678912345671"
-		valid := validator.IsOrderNumber(input)
-		assert.False(t, valid)
-	})
-	t.Run("Test_OrderNumberInvalidChars", func(t *testing.T) {
-		inputs := []string{"01234567891234567", "O123456789123456a", "O1234abcd6789123"}
-		for _, input := range inputs {
-			valid := validator.IsOrderNumber(input)
-			assert.False(t, valid)
-		}
-	})
-}
-
-func Test_IsDockerImage(t *testing.T) {
-	t.Run("Test_IsDockerImageValid", func(t *testing.T) {
-		inputs := []string{"alpine", "alpine:latest", "alpine-new:latest", "alpine:123"}
-		for _, input := range inputs {
-			valid := validator.IsDockerImage(input)
-			assert.True(t, valid)
-		}
-	})
-	t.Run("Test_IsDockerImageInvalidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsDockerImage(input)
-		assert.False(t, valid)
-	})
-	t.Run("Test_IsDockerImageInvalidChars", func(t *testing.T) {
-		inputs := []string{"Alpine", "Alpine latest", "@lpine"}
-		for _, input := range inputs {
-			valid := validator.IsDockerImage(input)
-			assert.False(t, valid)
-		}
-	})
-}
-
-func Test_IsOWASPEmail(t *testing.T) {
-	t.Run("Test_IsOWASPEmailValid", func(t *testing.T) {
+func Test_IsEmail(t *testing.T) {
+	t.Run("Test_IsEmailValid", func(t *testing.T) {
 		inputs := []string{"email@mail.com", "email_new@mail.com", "email-new@mail.com", "email.new@mail.com"}
 		for i, input := range inputs {
-			valid := validator.IsOWASPEmail(input)
+			valid := validator.IsEmail(input)
 			assert.True(t, valid, i)
 		}
 	})
-	t.Run("Test_IsOWASPEmailInvalidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsOWASPEmail(input)
-		assert.False(t, valid)
-	})
-	t.Run("Test_IsOWASPEmailInvalidChars", func(t *testing.T) {
+	t.Run("Test_IsEmailInvalidChars", func(t *testing.T) {
 		inputs := []string{"em@il@mail.com", "email @gmail.com"}
 		for _, input := range inputs {
-			valid := validator.IsOWASPEmail(input)
+			valid := validator.IsEmail(input)
 			assert.False(t, valid)
 		}
 	})
@@ -240,11 +154,6 @@ func Test_IsPermissionResource(t *testing.T) {
 			valid := validator.IsPermissionResource(input)
 			assert.True(t, valid, i)
 		}
-	})
-	t.Run("Test_IsPermissionResourceInvalidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsPermissionResource(input)
-		assert.False(t, valid)
 	})
 	t.Run("Test_IsPermissionResourceInvalidChars", func(t *testing.T) {
 		inputs := []string{"permission", "PERMISSION RESOURCE"}
@@ -263,11 +172,6 @@ func Test_IsPath(t *testing.T) {
 			assert.True(t, valid, i)
 		}
 	})
-	t.Run("Test_IsPathInvalidLength", func(t *testing.T) {
-		input := invalidLengthInput256
-		valid := validator.IsPath(input)
-		assert.False(t, valid)
-	})
 	t.Run("Test_IsPathInvalidChars", func(t *testing.T) {
 		inputs := []string{"path ", "path to", "/path wow/nice"}
 		for _, input := range inputs {
@@ -283,13 +187,6 @@ func Test_IsPassword(t *testing.T) {
 		for i, input := range inputs {
 			valid := validator.IsPassword(input)
 			assert.True(t, valid, i)
-		}
-	})
-	t.Run("Test_PasswordInvalidLength", func(t *testing.T) {
-		inputs := []string{"Paswrd1", "p@swrd1", "P@SWRD1", "Paswrd!"}
-		for i, input := range inputs {
-			valid := validator.IsPassword(input)
-			assert.False(t, valid, i)
 		}
 	})
 	t.Run("Test_PasswordInvalidRules", func(t *testing.T) {
@@ -340,5 +237,71 @@ func Test_BaseValidator(t *testing.T) {
 	t.Run("Test_UnavailableBaseValidator", func(t *testing.T) {
 		valid := validator.BaseValidator("ruleNotFound", "string")
 		assert.False(t, valid)
+	})
+}
+
+func Test_IsContainWhitespace(t *testing.T) {
+	t.Run("Test_IsContainWhitespaceValid", func(t *testing.T) {
+		inputs := []string{"hello world", "he llo"}
+		for i, input := range inputs {
+			valid := validator.IsContainWhitespace(input)
+			assert.True(t, valid, i)
+		}
+	})
+	t.Run("Test_IsContainWhitespaceInvalid", func(t *testing.T) {
+		inputs := []string{"helloWorld", "hello", "!@#$%^&*"}
+		for _, input := range inputs {
+			valid := validator.IsContainWhitespace(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_IsNotContainWhitespace(t *testing.T) {
+	t.Run("Test_IsContainWhitespaceInvalid", func(t *testing.T) {
+		inputs := []string{"hello world", "he llo"}
+		for i, input := range inputs {
+			valid := validator.IsNotContainWhitespace(input)
+			assert.False(t, valid, i)
+		}
+	})
+	t.Run("Test_IsContainWhitespaceValid", func(t *testing.T) {
+		inputs := []string{"helloWorld", "hello", "!@#$%^&*"}
+		for _, input := range inputs {
+			valid := validator.IsNotContainWhitespace(input)
+			assert.True(t, valid)
+		}
+	})
+}
+
+func Test_IsCodeChallenge(t *testing.T) {
+	t.Run("Test_IsCodeChallengeValid", func(t *testing.T) {
+		inputs := []string{"47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU", "a7_sLldsHuLmHKQzpS55XjADbVowVDS1GagArlnVpT8",
+			"1i4jrkEui1pXETxcmXRliqbDhk5voCdpfOxeOHjUBH4", "QYtYTirpqMsy-M4RyOZdT9mVLlFvdSjo-dxyBbKpUME"}
+		for i, input := range inputs {
+			valid := validator.IsCodeChallenge(input)
+			assert.True(t, valid, i)
+		}
+	})
+	t.Run("Test_IsCodeChallengeInvalidChars", func(t *testing.T) {
+		inputs := []string{"@#!$#%#%^@@%^^^&&%#"}
+		for _, input := range inputs {
+			valid := validator.IsCodeChallenge(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_IsDate(t *testing.T) {
+	t.Run("Test_IsDateValid", func(t *testing.T) {
+		valid := validator.IsDate("2019-09-03")
+		assert.True(t, valid)
+	})
+	t.Run("Test_IsDateInvalid", func(t *testing.T) {
+		inputs := []string{"03-09-19", "09-2019-03"}
+		for _, input := range inputs {
+			valid := validator.IsDate(input)
+			assert.False(t, valid)
+		}
 	})
 }
