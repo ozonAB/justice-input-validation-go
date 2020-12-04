@@ -305,3 +305,42 @@ func Test_IsDate(t *testing.T) {
 		}
 	})
 }
+
+func Test_IsURI(t *testing.T) {
+	t.Run("Test_IsURIValid", func(t *testing.T) {
+		// based on: https://tools.ietf.org/html/rfc3986#section-1.1.2
+		inputs := []string{
+			"ftp://ftp.is.co.za/rfc/rfc1808.txt",
+			"http://www.ietf.org/rfc/rfc2396.txt",
+			"ldap://[2001:db8::7]/c=GB?objectClass?one",
+			"mailto:John.Doe@example.com",
+			"news:comp.infosystems.www.servers.unix",
+			"tel:+1-816-555-1212",
+			"telnet://192.0.2.16:80/",
+			"urn:oasis:names:specification:docbook:dtd:xml:4.1.2",
+			"/lead-the-way",
+			"justice-launcher://",
+		}
+
+		for i, input := range inputs {
+			valid := validator.IsURI(input)
+			assert.True(t, valid, i)
+		}
+	})
+	t.Run("Test_IsURIInvalid", func(t *testing.T) {
+		inputs := []string{
+			"ordinary-string",
+			"example.com",
+			"1.1.1.1",
+			"2606:4700:4700::1111",
+			"koi@pond.com",
+			"+60 800 1000 2000",
+			"+1-816-555-1212",
+		}
+
+		for i, input := range inputs {
+			valid := validator.IsURI(input)
+			assert.False(t, valid, i)
+		}
+	})
+}

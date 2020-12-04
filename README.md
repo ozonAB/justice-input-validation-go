@@ -47,6 +47,7 @@ if valid, err := validator.ValidateStruct(reqData); !valid || err {
 "permissionResource"    : IsPermissionResource
 "path"                  : IsPath
 "url"                   : IsURL
+"uri"                   : IsURI
 "dateTime"              : IsDateTime
 "date"                  : IsDate
 "jwt"                   : IsJWT
