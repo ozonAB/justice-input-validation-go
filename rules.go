@@ -1,11 +1,12 @@
 package validator
 
 import (
-	"github.com/asaskevich/govalidator"
-	"github.com/pariz/gountries"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/asaskevich/govalidator"
+	"github.com/pariz/gountries"
 )
 
 func IsTag(str string) bool {

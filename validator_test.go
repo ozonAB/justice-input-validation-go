@@ -69,6 +69,11 @@ func Test_Validate(t *testing.T) {
 		}{
 			Input: "Password99!@",
 		},
+		"uri": struct {
+			Input string `valid:"uri"`
+		}{
+			Input: "justice-launcher://",
+		},
 	}
 
 	for i, v := range inputs {
