@@ -5,8 +5,9 @@
 package validator
 
 import (
-	"github.com/dlclark/regexp2"
 	"regexp"
+
+	"github.com/dlclark/regexp2"
 )
 
 const (

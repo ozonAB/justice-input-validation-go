@@ -1,10 +1,12 @@
 package validator
 
 import (
-	"github.com/asaskevich/govalidator"
-	"github.com/pariz/gountries"
+	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/asaskevich/govalidator"
+	"github.com/pariz/gountries"
 )
 
 func IsTag(str string) bool {
@@ -45,6 +47,11 @@ func IsPath(str string) bool {
 
 func IsURL(str string) bool {
 	return rxOWASPUrl.MatchString(str)
+}
+
+func IsURI(str string) bool {
+	_, err := url.ParseRequestURI(str)
+	return err == nil
 }
 
 func IsDateTime(str string) bool {

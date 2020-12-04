@@ -5,5 +5,5 @@ before_install:
 
 script:
   - GO111MODULE=on go mod vendor
-  - golangci-lint run --enable-all --disable=gochecknoinits,gochecknoglobals,scopelint
+  - golangci-lint run --enable-all --disable=gochecknoinits,gochecknoglobals,scopelint,gosec,lll
   - make test

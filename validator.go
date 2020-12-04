@@ -14,6 +14,7 @@ func init() {
 	govalidator.TagMap["permissionResource"] = IsPermissionResource
 	govalidator.TagMap["path"] = IsPath
 	govalidator.TagMap["url"] = IsURL
+	govalidator.TagMap["uri"] = IsURI
 	govalidator.TagMap["dateTime"] = IsDateTime
 	govalidator.TagMap["date"] = IsDate
 	govalidator.TagMap["jwt"] = IsJWT
