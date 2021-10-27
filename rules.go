@@ -41,6 +41,10 @@ func IsPermissionResource(str string) bool {
 	return rxResourcePermission.MatchString(str)
 }
 
+func IsPermissionResourceWithUUID(str string) bool {
+	return rxResourcePermissionWithUUID.MatchString(str)
+}
+
 func IsPath(str string) bool {
 	return rxPath.MatchString(str)
 }

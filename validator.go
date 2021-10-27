@@ -12,6 +12,7 @@ func init() {
 	govalidator.TagMap["personName"] = IsPersonName
 	govalidator.TagMap["uuid4WithoutHyphens"] = IsUUID4WithoutHyphens
 	govalidator.TagMap["permissionResource"] = IsPermissionResource
+	govalidator.TagMap["permissionResourceWithUUID"] = IsPermissionResourceWithUUID
 	govalidator.TagMap["path"] = IsPath
 	govalidator.TagMap["url"] = IsURL
 	govalidator.TagMap["uri"] = IsURI

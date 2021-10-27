@@ -164,6 +164,23 @@ func Test_IsPermissionResource(t *testing.T) {
 	})
 }
 
+func Test_IsPermissionResourceWithUUID(t *testing.T) {
+	t.Run("Test_IsPermissionResourceWithUUIDValid", func(t *testing.T) {
+		inputs := []string{"PERMISSION", "PERMISSION:RESOURCE", "PERMISSION:*:OTHER:{952082c7-5f84-460b-baa6-b8bf0a33ace4}"}
+		for i, input := range inputs {
+			valid := validator.IsPermissionResourceWithUUID(input)
+			assert.True(t, valid, i)
+		}
+	})
+	t.Run("Test_IsPermissionResourceWithUUIDInvalidChars", func(t *testing.T) {
+		inputs := []string{"permission", "PERMISSION RESOURCE", "PERMISSION:*:OTHER:{this_is_invalid}"}
+		for _, input := range inputs {
+			valid := validator.IsPermissionResourceWithUUID(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
 func Test_IsPath(t *testing.T) {
 	t.Run("Test_IsPathValid", func(t *testing.T) {
 		inputs := []string{"/path", "/path/TO/SomeWhere"}
