@@ -17,7 +17,7 @@ const (
 	TopicPattern                      = "^[A-Z]+([_]{1}[A-Z]+)*$"
 	DisplayNamePattern                = "^[a-zA-Z0-9]+(([',. -][a-zA-Z0-9])?[a-zA-Z0-9]*)*$"
 	PersonNamePattern                 = "^[a-zA-Z]+(([',. -][a-zA-Z])?[a-zA-Z]*)*$"
-	OWASPEmailPattern                 = `^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$`
+	OWASPEmailPattern                 = `^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,15}$`
 	ResourcePermissionPattern         = `^[A-Z]+([:]{1}([A-Z]+|(({[a-zA-Z]+})|[a-zA-Z0-9]+|\*)))*$`
 	ResourcePermissionPatternWithUUID = `^[A-Z]+([:]{1}([A-Z]+|(({[a-zA-Z0-9-]+})|[a-zA-Z0-9]+|\*)))*$`
 	OWASPURLPattern                   = `^((((https?|ftps?|gopher|telnet|nntp):\/\/)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$`
