@@ -323,6 +323,23 @@ func Test_IsDate(t *testing.T) {
 	})
 }
 
+func Test_IsNamespace(t *testing.T) {
+	t.Run("Test_IsNamespaceValid", func(t *testing.T) {
+		inputs := []string{"game1", "studio+game1"}
+		for _, input := range inputs {
+			valid := validator.IsNamespace(input)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_IsNamespaceInvalid", func(t *testing.T) {
+		inputs := []string{"game1+"}
+		for _, input := range inputs {
+			valid := validator.IsNamespace(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
 func Test_IsURI(t *testing.T) {
 	t.Run("Test_IsURIValid", func(t *testing.T) {
 		// based on: https://tools.ietf.org/html/rfc3986#section-1.1.2

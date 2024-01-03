@@ -57,6 +57,7 @@ if valid, err := validator.ValidateStruct(reqData); !valid || err {
 "notContainWhitespace"  : IsNotContainWhitespace
 "containWhitespace"     : IsContainWhitespace
 "country"               : IsCountry
+"namespace"             : IsNamespace
 ```
 
 And of course this package is not limiting the functionality that came from [govalidator](https://github.com/asaskevich/govalidator) package, you can use all available validation rules that supported by [govalidator](https://github.com/asaskevich/govalidator) package.

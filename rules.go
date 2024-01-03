@@ -111,3 +111,7 @@ func IsCountry(str string) bool {
 func IsCodeChallenge(str string) bool {
 	return rxCodeChallenge.MatchString(str)
 }
+
+func IsNamespace(input string) bool {
+	return rxNamespace.MatchString(input)
+}
