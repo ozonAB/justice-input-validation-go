@@ -74,6 +74,13 @@ func Test_Validate(t *testing.T) {
 		}{
 			Input: "justice-launcher://",
 		},
+		"namespace": struct {
+			Namespace1 string `valid:"namespace"`
+			Namespace2 string `valid:"namespace"`
+		}{
+			Namespace1: "game1",
+			Namespace2: "studio1+game1",
+		},
 	}
 
 	for i, v := range inputs {

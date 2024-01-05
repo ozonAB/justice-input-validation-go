@@ -29,6 +29,7 @@ func init() {
 	govalidator.TagMap["notContainWhitespace"] = IsNotContainWhitespace
 	govalidator.TagMap["containWhitespace"] = IsContainWhitespace
 	govalidator.TagMap["country"] = IsCountry
+	govalidator.TagMap["namespace"] = IsNamespace
 }
 
 // ValidateStruct is used to check the Struct based on the rule of each field

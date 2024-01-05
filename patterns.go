@@ -27,6 +27,7 @@ const (
 	CodeChallengePattern              = `^[a-zA-Z0-9-._~]*$`
 	ISO8601TimeFormat                 = "2006-01-02"
 	OWASPComplexPasswordPattern       = `^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#."&§%°()\|\[\]\-\$\^\@\/]{8,32}$`
+	NamespacePattern                  = `^[a-zA-Z0-9]{1,256}(\+[a-zA-Z0-9]{1,256})?$`
 )
 
 var (
@@ -45,4 +46,5 @@ var (
 	rxPath                       = regexp.MustCompile(PathPattern)
 	rxCodeChallenge              = regexp.MustCompile(CodeChallengePattern)
 	rxOWASPComplexPassword       = regexp2.MustCompile(OWASPComplexPasswordPattern, 0)
+	rxNamespace                  = regexp.MustCompile(NamespacePattern)
 )
