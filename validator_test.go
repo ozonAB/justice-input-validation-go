@@ -79,7 +79,7 @@ func Test_Validate(t *testing.T) {
 			Namespace2 string `valid:"namespace"`
 		}{
 			Namespace1: "game1",
-			Namespace2: "studio1+game1",
+			Namespace2: "studio1-game1",
 		},
 	}
 
