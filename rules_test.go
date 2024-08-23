@@ -2,6 +2,7 @@ package validator_test
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 
 	validator "github.com/AccelByte/justice-input-validation-go"
@@ -494,4 +495,30 @@ func Test_IsJWT(t *testing.T) {
 			assert.False(t, valid)
 		}
 	})
+}
+
+func Test_Concurrent_IsCountry(t *testing.T) {
+	var wg sync.WaitGroup
+	goroutineCount := 1000
+	wg.Add(goroutineCount)
+
+	for i := 0; i < goroutineCount; i++ {
+		go func() {
+			defer wg.Done()
+			// positive test
+			inputs := []string{"US", "ID", "FR"}
+			for _, input := range inputs {
+				valid := validator.IsCountry(input)
+				assert.True(t, valid)
+			}
+			// negative test
+			inputs = []string{"JPYN", " && ", " ", "--", "1234"}
+			for _, input := range inputs {
+				valid := validator.IsCountry(input)
+				assert.False(t, valid)
+			}
+		}()
+	}
+
+	wg.Wait()
 }
