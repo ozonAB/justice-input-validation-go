@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/pariz/gountries"
 )
 
 func IsTag(str string) bool {
@@ -103,11 +104,11 @@ func IsContainWhitespace(str string) bool {
 }
 
 func IsCountry(str string) bool {
-	var err error
-	if gountriesQuery != nil {
-		_, err = gountriesQuery.FindCountryByAlpha(str)
+	if gountriesQuery == nil {
+		gountriesQuery = gountries.New()
 	}
 
+	_, err := gountriesQuery.FindCountryByAlpha(str)
 	return err == nil
 }
 
