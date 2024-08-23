@@ -104,7 +104,11 @@ func IsContainWhitespace(str string) bool {
 }
 
 func IsCountry(str string) bool {
-	_, err := gountries.New().FindCountryByAlpha(str)
+	if gountriesQuery == nil {
+		gountriesQuery = gountries.New()
+	}
+
+	_, err := gountriesQuery.FindCountryByAlpha(str)
 	return err == nil
 }
 

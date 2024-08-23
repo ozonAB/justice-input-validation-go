@@ -5,9 +5,11 @@ import (
 	"github.com/pariz/gountries"
 )
 
+var gountriesQuery *gountries.Query
+
 func init() {
 	// setup countries firstly to avoid concurrent initialize
-	gountries.New()
+	gountriesQuery = gountries.New()
 
 	govalidator.TagMap["tag"] = IsTag
 	govalidator.TagMap["language"] = IsLanguage

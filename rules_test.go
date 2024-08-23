@@ -2,6 +2,7 @@ package validator_test
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 
 	validator "github.com/AccelByte/justice-input-validation-go"
@@ -293,8 +294,10 @@ func Test_IsNotContainWhitespace(t *testing.T) {
 
 func Test_IsCodeChallenge(t *testing.T) {
 	t.Run("Test_IsCodeChallengeValid", func(t *testing.T) {
-		inputs := []string{"47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU", "a7_sLldsHuLmHKQzpS55XjADbVowVDS1GagArlnVpT8",
-			"1i4jrkEui1pXETxcmXRliqbDhk5voCdpfOxeOHjUBH4", "QYtYTirpqMsy-M4RyOZdT9mVLlFvdSjo-dxyBbKpUME"}
+		inputs := []string{
+			"47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU", "a7_sLldsHuLmHKQzpS55XjADbVowVDS1GagArlnVpT8",
+			"1i4jrkEui1pXETxcmXRliqbDhk5voCdpfOxeOHjUBH4", "QYtYTirpqMsy-M4RyOZdT9mVLlFvdSjo-dxyBbKpUME",
+		}
 		for i, input := range inputs {
 			valid := validator.IsCodeChallenge(input)
 			assert.True(t, valid, i)
@@ -377,4 +380,145 @@ func Test_IsURI(t *testing.T) {
 			assert.False(t, valid, i)
 		}
 	})
+}
+
+func Test_IsCountry(t *testing.T) {
+	t.Run("Test_IsCountryValid", func(t *testing.T) {
+		inputs := []string{"US", "ID", "FR"}
+		for _, input := range inputs {
+			valid := validator.IsCountry(input)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_IsCountryInvalid", func(t *testing.T) {
+		inputs := []string{"JPYN", " && ", " ", "--", "1234"}
+		for _, input := range inputs {
+			valid := validator.IsCountry(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_IsNumber(t *testing.T) {
+	t.Run("Test_NumberValid", func(t *testing.T) {
+		inputs := []string{"123", "00", "010"}
+		for _, input := range inputs {
+			valid := validator.IsNumeric(input)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_IsNumericInvalid", func(t *testing.T) {
+		inputs := []string{"JPYN", " && ", " ", "--", "TEST"}
+		for _, input := range inputs {
+			valid := validator.IsNumeric(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_StringLength(t *testing.T) {
+	t.Run("Test_StringLength", func(t *testing.T) {
+		inputs := []string{"123", "00", "010"}
+		for _, input := range inputs {
+			valid := validator.StringLength(input, 1, 10)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_StringLengthInvalid", func(t *testing.T) {
+		inputs := []string{"JPYN", " && ", " OK ", "--", "TEST"}
+		for _, input := range inputs {
+			valid := validator.StringLength(input, 1, 1)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_IsURL(t *testing.T) {
+	t.Run("Test_IsURLValid", func(t *testing.T) {
+		inputs := []string{"http://localhost", "http://127.0.0.1", "https://localhost"}
+		for _, input := range inputs {
+			valid := validator.IsURL(input)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_IsURLInvalid", func(t *testing.T) {
+		inputs := []string{"JPYN", " && ", " OK ", "--", "TEST"}
+		for _, input := range inputs {
+			valid := validator.IsURL(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_IsIn(t *testing.T) {
+	t.Run("Test_IsInValid", func(t *testing.T) {
+		inputs := []string{"banana", "apple", "grape"}
+		valid := validator.IsIn("apple", inputs...)
+		assert.True(t, valid)
+	})
+	t.Run("Test_IsURLInvalid", func(t *testing.T) {
+		inputs := []string{"banana", "apple", "grape"}
+		valid := validator.IsIn("melon", inputs...)
+		assert.False(t, valid)
+	})
+}
+
+func Test_IsLowerCase(t *testing.T) {
+	t.Run("Test_IsLowerCaseValid", func(t *testing.T) {
+		inputs := []string{"banana", "apple", "grape"}
+		for _, input := range inputs {
+			valid := validator.IsLowerCase(input)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_IsLowerCaseInvalid", func(t *testing.T) {
+		inputs := []string{"BANANA", "Apple", "GraPe"}
+		for _, input := range inputs {
+			valid := validator.IsLowerCase(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_IsJWT(t *testing.T) {
+	t.Run("Test_IsJWTValid", func(t *testing.T) {
+		inputs := []string{"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"}
+		for _, input := range inputs {
+			valid := validator.IsJWT(input)
+			assert.True(t, valid)
+		}
+	})
+	t.Run("Test_IsJWTInvalid", func(t *testing.T) {
+		inputs := []string{"BANANA", "Apple", "GraPe"}
+		for _, input := range inputs {
+			valid := validator.IsJWT(input)
+			assert.False(t, valid)
+		}
+	})
+}
+
+func Test_Concurrent_IsCountry(t *testing.T) {
+	var wg sync.WaitGroup
+	goroutineCount := 1000
+	wg.Add(goroutineCount)
+
+	for i := 0; i < goroutineCount; i++ {
+		go func() {
+			defer wg.Done()
+			// positive test
+			inputs := []string{"US", "ID", "FR"}
+			for _, input := range inputs {
+				valid := validator.IsCountry(input)
+				assert.True(t, valid)
+			}
+			// negative test
+			inputs = []string{"JPYN", " && ", " ", "--", "1234"}
+			for _, input := range inputs {
+				valid := validator.IsCountry(input)
+				assert.False(t, valid)
+			}
+		}()
+	}
+
+	wg.Wait()
 }
