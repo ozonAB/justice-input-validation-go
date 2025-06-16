@@ -2,15 +2,9 @@ package validator
 
 import (
 	"github.com/asaskevich/govalidator"
-	"github.com/pariz/gountries"
 )
 
-var gountriesQuery *gountries.Query
-
 func init() {
-	// setup countries firstly to avoid concurrent initialize
-	gountriesQuery = gountries.New()
-
 	govalidator.TagMap["tag"] = IsTag
 	govalidator.TagMap["language"] = IsLanguage
 	govalidator.TagMap["topic"] = IsTopic
