@@ -104,8 +104,11 @@ func IsContainWhitespace(str string) bool {
 }
 
 func IsCountry(str string) bool {
+	if len(str) != 2 {
+		return false
+	}
 	country := countries.ByName(str)
-	return country != countries.Unknown
+	return country.IsValid()
 }
 
 func IsCodeChallenge(str string) bool {
