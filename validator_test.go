@@ -81,6 +81,11 @@ func Test_Validate(t *testing.T) {
 			Namespace1: "game1",
 			Namespace2: "studio1-game1",
 		},
+		"country": struct {
+			Country string `valid:"country"`
+		}{
+			Country: "XK",
+		},
 	}
 
 	for i, v := range inputs {
@@ -90,6 +95,23 @@ func Test_Validate(t *testing.T) {
 				t.Fatal(err.Error())
 			}
 			assert.True(t, valid, i)
+		})
+	}
+}
+
+func Test_InvalidValidate(t *testing.T) {
+	inputs := map[string]interface{}{
+		"invalid_country": struct {
+			Country string `valid:"country"`
+		}{
+			Country: "USA",
+		},
+	}
+
+	for i, v := range inputs {
+		t.Run("Test_"+i, func(t *testing.T) {
+			valid, _ := validator.ValidateStruct(v)
+			assert.False(t, valid, i)
 		})
 	}
 }
